@@ -1,10 +1,11 @@
 package drawings;
 
+
 import static org.junit.Assert.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
-record Point(int x, int y) {}
+ record Point(int x, int y) {}
 
 abstract class Shape {
 	
