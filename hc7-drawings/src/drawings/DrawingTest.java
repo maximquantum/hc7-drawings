@@ -12,11 +12,25 @@ class Point {
 		this.x = x;
 		this.y = y;
 	}
+	
+	public String toString() {
+		return "Point[x=" + x + ",y=" + y + "]";
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return obj instanceof Point p && this.x == p.x && this.y == p.y;
+	}
+
+	@Override
+	public int hashCode() {
+		return x + 31 * y;
+	}
 }
 
 abstract class Shape {
 	
-	abstract String toSVG();
+	abstract String toSVG(); // overridden method; is overridden by Circle.toSVG() and Polygon.toSVG()
 }
 
 class Circle extends Shape {
@@ -28,7 +42,7 @@ class Circle extends Shape {
 		this.radius = radius;
 	}
 	
-	String toSVG() {
+	String toSVG() { // overriding method; overrides Shape.toSVG()
 		return "<circle x='" + centre.x + "' y='" + centre.y + "' r='" + this.radius + "' />";
 	}
 }
@@ -57,7 +71,7 @@ class Drawing {
 	String toSVG() {
 		String result = "<svg xmlns='http://w3c.org/2000/svg'>";
 		for (Shape shape : shapes) {
-			result += shape.toSVG();
+			result += shape.toSVG(); // dynamisch gebonden methode-opgroep
 		}
 		return result + "</svg>";
 	}
@@ -74,5 +88,13 @@ public class DrawingTest {
 				new Polygon(new Point[] {new Point(0,10), new Point(10,0), new Point(10,10)})
 		};
 		assertEquals("<svg xmlns='http://w3c.org/2000/svg'><circle x='5' y='5' r='10' /><polygon points=0 10 10 0 10 10 ' /></svg>", myDrawing.toSVG());
+		
+		Object x = Integer.valueOf(10);
+		if (x instanceof Integer) {
+			int y = (int)x;
+		}
+		
+		assertEquals("Point[x=3,y=7]", "" + new Point(3, 7));
+		assertEquals(new Point(3, 7), new Point(3, 7));
 	}
 }
