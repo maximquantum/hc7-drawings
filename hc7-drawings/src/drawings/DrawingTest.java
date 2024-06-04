@@ -4,30 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
-
-class Point {
-	int x;
-	int y;
-	
-	Point(int x, int y) {
-		this.x = x;
-		this.y = y;
-	}
-	
-	public String toString() {
-		return "Point[x=" + x + ",y=" + y + "]";
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		return obj instanceof Point p && this.x == p.x && this.y == p.y;
-	}
-
-	@Override
-	public int hashCode() {
-		return x + 31 * y;
-	}
-}
+record Point(int x, int y) {}
 
 abstract class Shape {
 	
@@ -44,7 +21,7 @@ class Circle extends Shape {
 	}
 	
 	String toSVG() { // overriding method; overrides Shape.toSVG()
-		return "<circle x='" + centre.x + "' y='" + centre.y + "' r='" + this.radius + "' />";
+		return "<circle x='" + centre.x() + "' y='" + centre.y() + "' r='" + this.radius + "' />";
 	}
 }
 
@@ -58,7 +35,7 @@ class Polygon extends Shape {
 	String toSVG() {
 		String result = "<polygon points=";
 		for (Point point : vertices)
-			result += point.x + " " + point.y + " ";
+			result += point.x() + " " + point.y() + " ";
 		result += "' />";
 		return result;
 	}
@@ -95,7 +72,7 @@ public class DrawingTest {
 			int y = (int)x;
 		}
 		
-		assertEquals("Point[x=3,y=7]", "" + new Point(3, 7));
+		assertEquals("Point[x=3, y=7]", "" + new Point(3, 7));
 		assertEquals(new Point(3, 7), new Point(3, 7));
 	}
 }
